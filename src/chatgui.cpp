@@ -119,7 +119,7 @@ ChatBotPanelDialog::ChatBotPanelDialog(wxWindow *parent, wxWindowID id)
     //// STUDENT CODE
     ////
 
-    // create chat logic instance
+    // task 1 create chat logic instance
     // _chatLogic = new ChatLogic();
     // std::unique_ptr <ChatLogic> _chatLogic(new ChatLogic()); // unique pointer, _chatLogic is exclusive to ChantPanelDialog class,
     //  but use make_unique  https://stackoverflow.com/questions/22571202/differences-between-stdmake-unique-and-stdunique-ptr-with-new

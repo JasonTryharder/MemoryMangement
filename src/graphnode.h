@@ -3,6 +3,7 @@
 
 #include <vector>
 #include <string>
+#include <memory>
 #include "chatbot.h"
 
 
@@ -15,12 +16,16 @@ private:
     //// STUDENT CODE
     ////
 
-    // data handles (owned)
-    std::vector<GraphEdge *> _childEdges;  // edges to subsequent nodes
+    // data handles (owned) "outgoing"
+    // task 4 exclusive owned 
+    // std::vector<GraphEdge *> _childEdges;  // edges to subsequent nodes
+    std::vector<std::unique_ptr<GraphEdge>> _childEdges;
 
-    // data handles (not owned)
-    std::vector<GraphEdge *> _parentEdges; // edges to preceding nodes 
-    ChatBot *_chatBot;
+    // data handles (not owned) "incoming"
+    // task 4 Non-owning reference 
+    std::vector<GraphEdge *> _parentEdges; // edges to preceding nodes
+    // std::vector<std::unique_ptr<GraphEdge>> &_parentEdges;
+    ChatBot _chatBot;
 
     ////
     //// EOF STUDENT CODE
@@ -43,13 +48,17 @@ public:
 
     // proprietary functions
     void AddToken(std::string token); // add answers to list
+    // task 4
     void AddEdgeToParentNode(GraphEdge *edge);
-    void AddEdgeToChildNode(GraphEdge *edge);
+    // void AddEdgeToParentNode(GraphEdge &edge);
+    // void AddEdgeToChildNode(GraphEdge *edge);
+    void AddEdgeToChildNode(std::unique_ptr<GraphEdge> edge);
 
     //// STUDENT CODE
     ////
-
-    void MoveChatbotHere(ChatBot *chatbot);
+    // task 5 adapt to take instance of chatbot instead of pointer 
+    // void MoveChatbotHere(ChatBot *chatbot);
+    void MoveChatbotHere(ChatBot chatbot);
 
     ////
     //// EOF STUDENT CODE

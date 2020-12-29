@@ -48,11 +48,12 @@ ChatBot::~ChatBot()
 ////
 ChatBot::ChatBot(const ChatBot &source)// copy Constructor // task 2
 {
-    _image = new wxBitmap[sizeof(source._image)];
-    *_image = *source._image;
     _chatLogic = source._chatLogic;
+    _chatLogic->SetChatbotHandle(this);
     _rootNode = source._rootNode;
     _currentNode = source._currentNode;
+    _image = new wxBitmap[sizeof(source._image)];
+    *_image = *source._image;
     std::cout << "ChatBot Copy Constructor  "<< &source <<"to instance " << this << std::endl;
 }
 
@@ -61,21 +62,26 @@ ChatBot &ChatBot::operator=(const ChatBot &source)// copy assignment operator //
 {
     if (this == &source)
     return *this;
-    delete[] _image;
-    _image = new wxBitmap[sizeof(source._image)];
-    *_image = *source._image;
+    delete _image;
     _rootNode = source._rootNode;
     _currentNode = source._currentNode;
+    _chatLogic = source._chatLogic;
+    //task 5 
+    _chatLogic->SetChatbotHandle(this);
+    _image = new wxBitmap[sizeof(source._image)];
+    *_image = *source._image;
     std::cout << "ChatBot Copy Assignment Operator  instance "<< &source << "to instance " << this << std::endl;
+    return *this;
 }
 
 ChatBot::ChatBot(ChatBot &&source) // move constructor ,input is rvalue //task 2
 {
     _image = source._image;
     _chatLogic = source._chatLogic;
+    _chatLogic->SetChatbotHandle(this);
     _rootNode = source._rootNode;
     _currentNode = source._currentNode;
-    source._image = nullptr;
+    source._image = NULL; // wxWidgets used NULL 
     source._chatLogic = nullptr;
     source._rootNode = nullptr;
     source._currentNode = nullptr;
@@ -86,12 +92,21 @@ ChatBot &ChatBot::operator= (ChatBot &&source) // move assignment operator //tas
 {
     if (this == &source)
     return *this;
-    delete[] _image;
-     _image = source._image;
+    // delete[] _image; // _image is not an array, hence use the delete
+    delete _image; 
+    _image = NULL;
+    // data handles (not owned)
+    _currentNode = nullptr;
+    _rootNode = nullptr;
+    _chatLogic = nullptr;
+
+    _image = source._image;
+    
     _chatLogic = source._chatLogic;
+    _chatLogic->SetChatbotHandle(this);
     _rootNode = source._rootNode;
     _currentNode = source._currentNode;
-    source._image = nullptr;
+    source._image = NULL; // wxWidgets used NULL 
     source._chatLogic = nullptr;
     source._rootNode = nullptr;
     source._currentNode = nullptr;
